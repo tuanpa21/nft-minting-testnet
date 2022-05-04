@@ -5,14 +5,12 @@ import { useMoralis } from "react-moralis";
 import {isWalletConnected} from "../libs/web3";
 
 export default function Home() {
-  const { authenticate } = useMoralis();
+  const { authenticate, isAuthenticated } = useMoralis();
   const router = useRouter();
 
-  useEffect(() => {
-      isWalletConnected().then((isAuthenticated) => {
-          if (isAuthenticated) router.push("/upload").then();
-      })
-  }, []);
+    useEffect(() => {
+        if (isAuthenticated) router.push("/dashboard");
+    }, [isAuthenticated]);
 
   return (
     <div className="flex w-screen h-screen items-center justify-center">

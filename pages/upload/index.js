@@ -1,14 +1,14 @@
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import React, {useEffect, useState} from "react";
-import { useMoralis } from "react-moralis";
+import {useMoralis} from "react-moralis";
 import Moralis from "moralis";
 import Web3 from "web3";
-import { contractABI, contractAddress } from "../../contract";
-import {isWalletConnected} from "../../libs/web3";
+import {contractABI, contractAddress} from "../../contract";
+
 const web3 = new Web3(Web3.givenProvider);
 
 function Dashboard() {
-  const { logout, user } = useMoralis();
+  const { logout, user, isAuthenticated } = useMoralis();
   const router = useRouter();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -16,10 +16,8 @@ function Dashboard() {
   const [isMinting, setIsMinting] = useState(false);
 
   useEffect(() => {
-    isWalletConnected().then((isAuthenticated) => {
-      if (!isAuthenticated) router.push("/").then();
-    })
-  }, []);
+    if (!isAuthenticated) router.push("/");
+  }, [isAuthenticated]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -93,11 +91,14 @@ function Dashboard() {
         <button
           type="submit"
           className="mt-5 w-full p-5 bg-green-700 text-white text-lg rounded-xl animate-pulse"
+          disabled={isMinting}
         >
           Mint now!
         </button>
-        <button
-          onClick={logout}
+        <button type="button"
+          onClick={(e) => {
+            logout().then(() => router.push('/'))
+          }}
           className="mt-5 w-full p-5 bg-red-700 text-white text-lg rounded-xl"
         >
           Logout
