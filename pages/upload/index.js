@@ -7,7 +7,7 @@ import {contractABI, contractAddress} from "../../contract";
 
 const web3 = new Web3(Web3.givenProvider);
 
-function Dashboard() {
+function Upload() {
   const { logout, user, isAuthenticated } = useMoralis();
   const router = useRouter();
   const [name, setName] = useState("");
@@ -108,4 +108,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Upload;
